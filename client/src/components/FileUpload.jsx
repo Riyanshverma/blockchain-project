@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios"; /* Is used for interacting with pinata. */
-import "./FileUpload.css";
 
 const FileUpload = ({ contract, account, provider }) => {
   const [file, setFile] = useState(null);
@@ -65,9 +64,7 @@ const FileUpload = ({ contract, account, provider }) => {
   return (
     <div>
       <form className="form" onSubmit={handleSubmit}>
-        {" "}
-        {/* This handleSubmit will help in storing images in IPFS through pinata. */}
-        <label htmlFor="file-upload" className="choose">
+        <label htmlFor="file-upload" className="bg-green-500 text-white p-2 rounded cursor-pointer">
           Choose Image
         </label>
         <input
@@ -76,9 +73,10 @@ const FileUpload = ({ contract, account, provider }) => {
           id="file-upload"
           name="data"
           onChange={retrieveFile}
+          className="hidden"
         />
-        <span className="textArea">Image: {fileName}</span>
-        <button type="submit" className="upload" disabled={!file}>
+        <span className="text-white">Image: {fileName}</span>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded" disabled={!file}>
           Upload File
         </button>
       </form>

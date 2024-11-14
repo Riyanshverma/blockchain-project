@@ -1,6 +1,6 @@
 import React from 'react'
 import { useEffect } from "react";
-import "./Modal.css";
+
 const Modal = ({ setModalOpen, contract }) => {
 
   const sharing = async () => {
@@ -28,26 +28,29 @@ const Modal = ({ setModalOpen, contract }) => {
   }, [contract])
   return (
     <>
-      <div className="modalBackground">
-        <div className="modalContainer">
-          <div className="title">Share with</div>
-
-          <div className="body">
-            <input type="text" className="address" placeholder="Enter Address"></input>
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+        <div className="bg-white p-6 rounded shadow-lg">
+          <div className="text-center">
+            <h2 className="text-xl font-bold">Share with</h2>
           </div>
-          <form id="myForm">
-            <select id="selectNumber">
-              <option className="address">People With Access</option>
+          <div className="mt-4">
+            <input type="text" className="border p-2 w-full" placeholder="Enter Address" />
+          </div>
+          <form id="myForm" className="mt-4">
+            <select id="selectNumber" className="border p-2 w-full">
+              <option>People With Access</option>
             </select>
           </form>
-
-          <div className="footer">
+          <div className="flex justify-end mt-4">
             <button
-              onClick={() => {
-                setModalOpen(false);
-              }}
-              id="cancelBtn">Cancel</button>
-            <button onClick={() => sharing()}>Share</button>
+              onClick={() => setModalOpen(false)}
+              className="bg-red-500 text-white p-2 rounded mr-2"
+            >
+              Cancel
+            </button>
+            <button onClick={sharing} className="bg-blue-500 text-white p-2 rounded">
+              Share
+            </button>
           </div>
         </div>
       </div>

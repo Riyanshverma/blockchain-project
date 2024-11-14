@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import FileUpload from "./components/FileUpload";
 import Display from "./components/Display";
 import Modal from "./components/Modal";
-import "./App.css";
+
 
 function App() {
 
@@ -52,8 +52,9 @@ function App() {
 
   return (
     <>
+      <div class="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
       {!modalOpen && (
-        <button className="share" onClick={() => setModalOpen(true)}>
+        <button className="bg-red-500 text-white p-2 rounded" onClick={() => setModalOpen(true)}>
           Share
         </button>
       )}
@@ -61,13 +62,13 @@ function App() {
         <Modal setModalOpen={setModalOpen} contract={contract}></Modal>
       )}
 
-      <div className="App">
-        <h1 style={{ color: "white" }}>Gdrive 3.0</h1>
+      <div className="App text-center">
+        <h1 className="text-white">Gdrive 3.0</h1>
         <div className="bg"></div>
         <div className="bg bg2"></div>
         <div className="bg bg3"></div>
 
-        <p style={{ color: "white" }}>
+        <p className="text-white">
           Account : {account ? account : "Not connected"}
         </p>
         <FileUpload
