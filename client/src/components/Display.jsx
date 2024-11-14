@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 import { useState } from "react";
 import "./Display.css";
 
 const Display = ({ contract, account }) => {
-
-  const [data, setData] = useState("");
+  "";
+  const [data, setData] = useState();
   const getdata = async () => {
     let dataArray;
     const Otheraddress = document.querySelector(".address").value; // This will fetch the address of the other user jiski files view krni h.
@@ -13,12 +13,10 @@ const Display = ({ contract, account }) => {
       if (Otheraddress) {
         dataArray = await contract.display(Otheraddress); // This will give the data of the other user's files.
         console.log(dataArray);
-      }
-      else {
+      } else {
         dataArray = await contract.display(account); // This will show the data of the connected account.
       }
-    }
-    catch (e) {
+    } catch (e) {
       alert("You don't have access");
     }
     try {
@@ -32,20 +30,23 @@ const Display = ({ contract, account }) => {
         const images = str_array.map((item, i) => {
           return (
             <a href={item} key={i} target="_blank">
-              <img key={i} src={`${item}`} alt="new" className="image-list"></img>
+              <img
+                key={i}
+                src={`${item}`}
+                alt="new"
+                className="image-list"
+              ></img>
             </a>
-          )
-        })
+          );
+        });
         setData(images);
-      }
-      else {
+      } else {
         alert("No image to display");
       }
+    } catch (e) {
+      alert("Kuch toh chuda tha!!", e);
     }
-    catch (e) {
-      alert("Kuch toh chuda tha!!",e)
-    }
-  }
+  };
   return (
     <>
       <div className="image-list">{data}</div>
@@ -58,7 +59,7 @@ const Display = ({ contract, account }) => {
         Get Data
       </button>
     </>
-  )
-}
+  );
+};
 
-export default Display
+export default Display;

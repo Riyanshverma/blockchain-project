@@ -1,10 +1,9 @@
-import React from 'react'
+import React from "react";
 import { useState } from "react";
 import axios from "axios"; /* Is used for interacting with pinata. */
 import "./FileUpload.css";
 
 const FileUpload = ({ contract, account, provider }) => {
-
   const [file, setFile] = useState(null);
   const [fileName, setFileName] = useState("No image selected");
 
@@ -20,29 +19,34 @@ const FileUpload = ({ contract, account, provider }) => {
           url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
           data: formData,
           headers: {
-            pinata_api_key: `28bf905082ff0c7bf6f1`,
-            pinata_secret_api_key: `c273b2ca7ce1ce3b12bf58ac5b4a59a6d6933ed4cd2333e3fe930ced5dc3ec3c`,
+            pinata_api_key: `59029e523dd9160000b1`,
+            pinata_secret_api_key: `742255e1bdcc5c19a53e14caafb8a3f889ebccd789fde793c8958decd143b138`,
             "Content-Type": "multipart/form-data",
           },
         });
         /* This resFile function will upload the file on IPFS through pinata. */
 
         const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`; /* This will generate a hash of the file after uploading. */
-        contract.add(account,ImgHash); /* This will add the image to blockchain. */
+        contract.add(
+          account,
+          ImgHash
+        ); /* This will add the image to blockchain. */
         alert("Successfully Image Uploaded");
         setFileName("No image selected");
         setFile(null);
-      }
-      catch (e) {
-        alert("Unable to upload image to Pinata"); /* This error will occur while uploading any file on pinata. */
+      } catch (e) {
+        alert(
+          "Unable to upload image to Pinata"
+        ); /* This error will occur while uploading any file on pinata. */
       }
     }
     alert("Successfully Image Uploaded");
     setFileName("No image selected");
     setFile(null);
-  }
+  };
 
-  const retrieveFile = async (e) => { /* This function takes the file from the user. Now the task is to get multiples fils uploaded. */
+  const retrieveFile = async (e) => {
+    /* This function takes the file from the user. Now the task is to get multiples fils uploaded. */
     try {
       const data = e.target.files[0]; // Selecting an image from array of files object.
       // console.log(data);
@@ -53,15 +57,16 @@ const FileUpload = ({ contract, account, provider }) => {
       };
       setFileName(e.target.files[0].name);
       e.preventDefault();
+    } catch {
+      alert("Error in retireving the file.");
     }
-    catch{
-      alert("Error in retireving the file.")
-    }
-  }
+  };
 
   return (
     <div>
-      <form className="form" onSubmit={handleSubmit}> {/* This handleSubmit will help in storing images in IPFS through pinata. */}
+      <form className="form" onSubmit={handleSubmit}>
+        {" "}
+        {/* This handleSubmit will help in storing images in IPFS through pinata. */}
         <label htmlFor="file-upload" className="choose">
           Choose Image
         </label>
@@ -78,7 +83,7 @@ const FileUpload = ({ contract, account, provider }) => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default FileUpload
+export default FileUpload;
