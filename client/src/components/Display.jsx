@@ -1,13 +1,14 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 
 const Display = ({ contract, account }) => {
   "";
   const [data, setData] = useState();
+  const addressRef = useRef(null);
   const getdata = async () => {
     let dataArray;
-    const Otheraddress = document.querySelector(".address").value; // This will fetch the address of the other user jiski files view krni h.
+    const Otheraddress = addressRef.current.value // This will fetch the address of the other user jiski files view krni h.
 
     try {
       if (Otheraddress) {
@@ -29,12 +30,12 @@ const Display = ({ contract, account }) => {
 
         const images = str_array.map((item, i) => {
           return (
-            <a href={item} key={i} target="_blank">
+            <a href={item} key={i} target="_blank" >
               <img
                 key={i}
                 src={`${item}`}
                 alt="new"
-                className="image-list"
+                className="w-64 h-80 object-cover m-2"
               ></img>
             </a>
           );
@@ -49,13 +50,14 @@ const Display = ({ contract, account }) => {
   };
   return (
     <>
-      <div className="image-list">{data}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">{data}</div>
       <input
         type="text"
         placeholder="Enter Address"
-        className="address"
+        className="block mx-auto my-4 p-2 border rounded w-80"
+        ref={addressRef}
       ></input>
-      <button className="center button" onClick={getdata}>
+      <button className="bg-blue-500 text-white p-2 rounded mx-auto block" onClick={getdata}>
         Get Data
       </button>
     </>
