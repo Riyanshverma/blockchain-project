@@ -1,17 +1,20 @@
-import React from "react";
-import { useState } from "react";
-import axios from "axios"; /* Is used for interacting with pinata. */
+'use client'
 
-const FileUpload = ({ contract, account, provider }) => {
-  const [file, setFile] = useState(null);
-  const [fileName, setFileName] = useState("No image selected");
+import React, { useState } from "react"
+import axios from "axios"
+
+export default function FileUpload({ contract, account, provider }) {
+  const [file, setFile] = useState(null)
+  const [fileName, setFileName] = useState("No File Selected")
+  const [uploading, setUploading] = useState(false)
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (file) {
       try {
-        const formData = new FormData();
-        formData.append("file", file);
+        setUploading(true)
+        const formData = new FormData()
+        formData.append("file", file)
 
         const resFile = await axios({
           method: "post",
@@ -22,66 +25,75 @@ const FileUpload = ({ contract, account, provider }) => {
             pinata_secret_api_key: `742255e1bdcc5c19a53e14caafb8a3f889ebccd789fde793c8958decd143b138`,
             "Content-Type": "multipart/form-data",
           },
-        });
-        /* This resFile function will upload the file on IPFS through pinata. */
+        })
 
-        const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`; /* This will generate a hash of the file after uploading. */
-        contract.add(
-          account,
-          ImgHash
-        ); /* This will add the image to blockchain. */
-        alert("Successfully Image Uploaded");
-        setFileName("No image selected");
-        setFile(null);
+        const ImgHash = `https://gateway.pinata.cloud/ipfs/${resFile.data.IpfsHash}`
+        await contract.add(account, ImgHash)
+        alert("Successfully Image Uploaded")
+        setFileName("No image selected")
+        setFile(null)
       } catch (e) {
-        alert(
-          "Unable to upload image to Pinata"
-        ); /* This error will occur while uploading any file on pinata. */
+        console.error(e)
+        alert("Unable to upload image to Pinata")
+      } finally {
+        setUploading(false)
       }
     }
-    alert("Successfully Image Uploaded");
-    setFileName("No image selected");
-    setFile(null);
-  };
+  }
 
-  const retrieveFile = async (e) => {
-    /* This function takes the file from the user. Now the task is to get multiples fils uploaded. */
+  const retrieveFile = (e) => {
     try {
-      const data = e.target.files[0]; // Selecting an image from array of files object.
-      // console.log(data);
-      const reader = new window.FileReader();
-      reader.readAsArrayBuffer(data);
-      reader.onloadend = () => {
-        setFile(e.target.files[0]);
-      };
-      setFileName(e.target.files[0].name);
-      e.preventDefault();
-    } catch {
-      alert("Error in retireving the file.");
+      const data = e.target.files?.[0]
+      if (data) {
+        const reader = new window.FileReader()
+        reader.readAsArrayBuffer(data)
+        reader.onloadend = () => {
+          setFile(data)
+        }
+        setFileName(data.name)
+      }
+    } catch (error) {
+      console.error(error)
+      alert("Error in retrieving the file.")
     }
-  };
+  }
 
   return (
-    <div>
-      <form className="form" onSubmit={handleSubmit}>
-        <label htmlFor="file-upload" className="bg-green-500 text-white p-2 rounded cursor-pointer">
-          Choose Image
-        </label>
+    <div className="w-full max-w-md mx-auto">
+      <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label
+            htmlFor="file-upload"
+            className="block w-full text-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer transition duration-300 ease-in-out"
+          >
+            Choose File
+          </label>
+          <input
+            disabled={!account || uploading}
+            type="file"
+            id="file-upload"
+            name="data"
+            onChange={retrieveFile}
+            className="hidden"
+          />
+        </div>
         <input
-          disabled={!account}
-          type="file"
-          id="file-upload"
-          name="data"
-          onChange={retrieveFile}
-          className="hidden"
+          type="text"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+          className="block mx-auto my-4 p-2 border rounded w-80"
         />
-        <span className="text-white">Image: {fileName}</span>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded" disabled={!file}>
-          Upload File
-        </button>
+        <div className="flex items-center justify-center">
+          <button
+            type="submit"
+            className={`bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out ${(!file || uploading) && "opacity-50 cursor-not-allowed"
+              }`}
+            disabled={!file || uploading}
+          >
+            {uploading ? "Uploading..." : "Upload File"}
+          </button>
+        </div>
       </form>
     </div>
-  );
-};
-
-export default FileUpload;
+  )
+}

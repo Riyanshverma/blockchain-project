@@ -30,7 +30,7 @@ const Display = ({ contract, account }) => {
 
         const images = str_array.map((item, i) => {
           return (
-            <a href={item} key={i} target="_blank" >
+            <a href={item} key={i} target="_blank">
               <img
                 key={i}
                 src={`${item}`}

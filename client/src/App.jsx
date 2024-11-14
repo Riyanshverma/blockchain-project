@@ -52,10 +52,21 @@ function App() {
 
   return (
     <>
-      <div class="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
+      <div className="text-left ">
+        {!modalOpen && (
+          <button
+            className="bg-blue-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+            onClick={() => setModalOpen(true)}
+          >
+            Share Files
+          </button>
+        )}
+        {modalOpen && <Modal setModalOpen={setModalOpen} contract={contract} />}
+      </div>
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
         <div className="container mx-auto px-4 py-8">
           <header className="mb-8">
-            <h1 className="text-gray-100 text-4xl font-bold text-center mb-4">Gdrive 3.0</h1>
+            <h1 className="text-gray-100 text-4xl font-bold text-center mb-4">Decentralized Drive</h1>
             <p className="text-center text-gray-300">
               Account: {account ? `${account.slice(0, 6)}...${account.slice(-4)}` : "Not connected"}
             </p>
@@ -72,17 +83,7 @@ function App() {
               <Display contract={contract} account={account} />
             </div>
 
-            <div className="text-center">
-              {!modalOpen && (
-                <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-300"
-                  onClick={() => setModalOpen(true)}
-                >
-                  Share Files
-                </button>
-              )}
-              {modalOpen && <Modal setModalOpen={setModalOpen} contract={contract} />}
-            </div>
+
           </main>
         </div>
       </div>
